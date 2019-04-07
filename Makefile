@@ -5,7 +5,6 @@ build:
 
 .PHONY: remove
 remove:
-	stop
 	cd app1 && make remove
 	cd app2 && make remove
 

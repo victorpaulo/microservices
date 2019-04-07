@@ -1,9 +1,11 @@
 APP=app1
 VERSION=1.0
 PORT=8081
+DANGLING_IMAGES_CMD=$(shell docker images -q -f dangling=true)
 
 .PHONY: remove
-remove:
+remove: stop
+	-docker rmi $(DANGLING_IMAGES_CMD)
 	docker rmi $(APP):$(VERSION)
 
 .PHONY: build
@@ -16,4 +18,5 @@ run:
 
 .PHONY: stop
 stop:
+	echo "stopping"
 	docker stop $(APP)
