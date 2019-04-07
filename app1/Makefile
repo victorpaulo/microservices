@@ -1,5 +1,5 @@
 APP=microservices_app1
-VERSION=1.0
+VERSION=1.1
 PORT=8081
 DANGLING_IMAGES_CMD=$(shell docker images -q -f dangling=true)
 DOCKER_REGISTRY=172.28.128.5:5000

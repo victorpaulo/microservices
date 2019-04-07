@@ -18,8 +18,11 @@ spec:
         app: myapp2
     spec:
       containers:
-      - image: localhost:5000/microservices_app2:1.0
+      - image: localhost:5000/microservices_app2:1.1
         name: microservices-app2
+        env:
+        - name: APP1
+          value: "http://myapp1-svc:8081/foo"
         resources: 
           requests:
             memory: "64Mi"
