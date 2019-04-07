@@ -1,4 +1,4 @@
-APP=app2
+APP=microservices_app2
 VERSION=1.0
 PORT=8082
 DANGLING_IMAGES_CMD=$(shell docker images -q -f dangling=true)

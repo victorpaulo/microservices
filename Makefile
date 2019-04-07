@@ -17,3 +17,11 @@ run:
 stop:
 	cd app1 && make stop
 	cd app2 && make stop
+
+.PHONY: compose
+compose:
+	docker-compose up -d
+
+.PHONY: decompose
+decompose:
+	docker-compose down
