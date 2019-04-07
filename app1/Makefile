@@ -3,6 +3,7 @@ VERSION=1.0
 PORT=8081
 DANGLING_IMAGES_CMD=$(shell docker images -q -f dangling=true)
 DOCKER_REGISTRY=172.28.128.5:5000
+KUBECONFIG_PATH=/Users/victorp/projects/kubernates-vm
 
 .PHONY: remove
 remove: stop
@@ -27,7 +28,7 @@ push:
 	docker push $(DOCKER_REGISTRY)/$(APP):$(VERSION)
 
 k8s-local:
-	export KUBECONFIG=/Users/victorp/projects/kubernates-vm/config
+	export KUBECONFIG=$(KUBECONFIG_PATH)/config
 	kubectl cluster-info
 
 k8s-install: k8s-local
