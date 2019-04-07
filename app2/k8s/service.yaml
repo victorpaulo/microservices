@@ -8,12 +8,12 @@ metadata:
 spec:
   ports:
   - name: myapp2
-    port: 80
+    port: 8082
     protocol: TCP
-    targetPort: 8080
+    targetPort: 8082
   selector:
     app: myapp2
   sessionAffinity: None
-  type: ClusterIP
+  type: NodePort
 status:
   loadBalancer: {}

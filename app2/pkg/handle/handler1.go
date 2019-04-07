@@ -17,3 +17,9 @@ func FooHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hi there APP2, I love %s!<br/>", r.URL.Path[1:])
 	fmt.Fprintf(w, "Call <a href=%s>app1</a>", os.Getenv("APP1"))
 }
+
+//Healthz test container health
+func Healthz(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(200)
+	w.Write([]byte("ok"))
+}

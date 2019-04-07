@@ -10,5 +10,6 @@ import (
 func main() {
 	fmt.Println(handle.Print())
 	http.HandleFunc("/bar", handle.FooHandler)
+	http.HandleFunc("/healthz", handle.Healthz)
 	log.Fatal(http.ListenAndServe(":8082", nil))
 }

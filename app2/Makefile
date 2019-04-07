@@ -32,8 +32,8 @@ k8s-local:
 	kubectl cluster-info
 
 k8s-install: k8s-local
-	kubectl create -f k8s/deployment.yaml
-	kubectl create -f k8s/service.yaml
+	kubectl apply -f k8s/deployment.yaml
+	kubectl apply -f k8s/service.yaml
 
 del-docker-registry:
 	#get digest id
