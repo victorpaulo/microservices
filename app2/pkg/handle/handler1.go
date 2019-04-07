@@ -13,6 +13,7 @@ func Print() string {
 
 //FooHandler handler
 func FooHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hi there APP2, I love %s!", r.URL.Path[1:])
-	fmt.Fprintf(w, "Call app1 <a href=%s></a>", os.Getenv("APP1"))
+	w.Header().Set("Content-Type", "text/html")
+	fmt.Fprintf(w, "Hi there APP2, I love %s!<br/>", r.URL.Path[1:])
+	fmt.Fprintf(w, "Call <a href=%s>app1</a>", os.Getenv("APP1"))
 }
