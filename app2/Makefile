@@ -36,8 +36,10 @@ k8s-install: k8s-local
 	kubectl create -f k8s/service.yaml
 
 del-docker-registry:
+	#get digest id
 	curl -v --silent -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
 		-X GET http://$(DOCKER_REGISTRY)/v2/$(APP)/manifests/$(VERSION) 2>&1 \
 		| grep Docker-Content-Digest | awk '{print ($3)}'
+	#delete from registry
 	curl -v --silent -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
 		-X DELETE http://$(DOCKER_REGISTRY)/v2/$(APP)/manifests/$(digest_id)
