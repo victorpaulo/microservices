@@ -5,6 +5,8 @@ DANGLING_IMAGES_CMD=$(shell docker images -q -f dangling=true)
 DOCKER_IMAGES=$(shell docker images | grep $(APP) | tr -s ' ' | cut -d ' ' -f 3)
 DOCKER_REGISTRY=172.28.128.5:5000
 KUBECONFIG_PATH=/Users/victorp/projects/kubernates-vm
+CURL_DIGEST:=$(shell curl -v --silent -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' \
+		-X GET http://$(DOCKER_REGISTRY)/v2/$(APP)/manifests/$(VERSION) 2>&1 | grep Docker-Content-Digest | awk '{print $$3}')
 
 .PHONY: remove
 remove: stop
@@ -37,10 +39,6 @@ k8s-install: k8s-local
 	kubectl apply -f k8s/service.yaml
 
 del-docker-registry:
-	#get digest id
+	echo "$(CURL_DIGEST)"
 	curl -v --silent -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
-		-X GET http://$(DOCKER_REGISTRY)/v2/$(APP)/manifests/$(VERSION) 2>&1 \
-		| grep Docker-Content-Digest | awk '{print ($3)}'
-	#delete from registry
-	curl -v --silent -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
-		-X DELETE http://$(DOCKER_REGISTRY)/v2/$(APP)/manifests/$(digest_id)
+		-X DELETE http://$(DOCKER_REGISTRY)/v2/$(APP)/manifests/$(CURL_DIGEST)

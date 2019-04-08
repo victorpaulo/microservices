@@ -1,4 +1,3 @@
-CURL_DOCKER=$(shell curl -X GET http://172.28.128.5:5000/v2/_catalog)
 
 .PHONY: build
 build:
@@ -36,8 +35,12 @@ decompose:
 
 .PHONY: docker-list
 docker-list:
-	$(CURL_DOCKER)
+	curl -X GET http://172.28.128.5:5000/v2/_catalog
 
 k8s-install-apps:
 	cd app1 && make k8s-install
 	cd app2 && make k8s-install
+
+delele-registry-images:
+	cd app1 && make del-docker-registry
+	cd app2 && make del-docker-registry
