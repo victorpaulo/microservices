@@ -2,6 +2,7 @@ APP=microservices_app1
 VERSION=1.1
 PORT=8081
 DANGLING_IMAGES_CMD=$(shell docker images -q -f dangling=true)
+DOCKER_IMAGES=$(shell docker images | grep $(APP) | tr -s ' ' | cut -d ' ' -f 3)
 DOCKER_REGISTRY=172.28.128.5:5000
 KUBECONFIG_PATH=/Users/victorp/projects/kubernates-vm
 CURL_DIGEST=$(shell curl -v --silent -H "Accept: application/vnd.docker.distribution.manifest.v2+json" \
@@ -11,8 +12,9 @@ CURL_DIGEST=$(shell curl -v --silent -H "Accept: application/vnd.docker.distribu
 
 .PHONY: remove
 remove: stop
-	-docker rmi $(DANGLING_IMAGES_CMD)
-	docker rmi $(APP):$(VERSION)
+	-docker rmi --force $(DANGLING_IMAGES_CMD)
+	-docker rmi --force $(DOCKER_IMAGES)
+	
 
 .PHONY: build
 build:

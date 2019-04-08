@@ -2,13 +2,14 @@ APP=microservices_app2
 VERSION=1.1
 PORT=8082
 DANGLING_IMAGES_CMD=$(shell docker images -q -f dangling=true)
+DOCKER_IMAGES=$(shell docker images | grep $(APP) | tr -s ' ' | cut -d ' ' -f 3)
 DOCKER_REGISTRY=172.28.128.5:5000
 KUBECONFIG_PATH=/Users/victorp/projects/kubernates-vm
 
 .PHONY: remove
 remove: stop
-	-docker rmi $(DANGLING_IMAGES_CMD)
-	docker rmi $(APP):$(VERSION)
+	-docker rmi --force $(DANGLING_IMAGES_CMD)
+	-docker rmi --force $(DOCKER_IMAGES)
 
 .PHONY: build
 build:

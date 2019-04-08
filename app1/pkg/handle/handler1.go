@@ -2,6 +2,7 @@ package handle
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 )
@@ -13,9 +14,25 @@ func Print() string {
 
 //FooHandler handler
 func FooHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html")
-	fmt.Fprintf(w, "Hi there APP1, I love %s!<br/>", r.URL.Path[1:])
-	fmt.Fprintf(w, "Call <a href=%s>app2</a>", os.Getenv("APP2"))
+	w.Header().Set("Content-Type", "application/json")
+
+	endpointApp2 := os.Getenv("APP2")
+	if endpointApp2 != "" {
+		resp, err := http.Get(endpointApp2)
+		if err != nil {
+			fmt.Fprintf(w, "Error when calling service endpoint %s %s", endpointApp2, err)
+			return
+		}
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Fprintf(w, "Error when reading the bosy %s", err)
+		}
+		fmt.Fprintf(w, string(body))
+	} else {
+		fmt.Fprintf(w, "{\"error\":\"endpoint not defined}\"")
+	}
+
 }
 
 //Healthz test container health
