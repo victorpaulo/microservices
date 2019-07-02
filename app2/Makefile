@@ -3,7 +3,7 @@ VERSION=1.1
 PORT=8082
 DANGLING_IMAGES_CMD=$(shell docker images -q -f dangling=true)
 DOCKER_IMAGES=$(shell docker images | grep $(APP) | tr -s ' ' | cut -d ' ' -f 3)
-DOCKER_REGISTRY=172.28.128.5:5000
+DOCKER_REGISTRY=172.28.128.3:5000
 KUBECONFIG_PATH=/Users/victorp/projects/kubernates-vm
 CURL_DIGEST:=$(shell curl -v --silent -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' \
 		-X GET http://$(DOCKER_REGISTRY)/v2/$(APP)/manifests/$(VERSION) 2>&1 | grep Docker-Content-Digest | awk '{print $$3}')
@@ -15,8 +15,9 @@ remove: stop
 
 .PHONY: build
 build:
-	docker build -t $(APP):$(VERSION) .
-	docker tag $(APP):$(VERSION) $(DOCKER_REGISTRY)/$(APP):$(VERSION)
+	docker build --rm -t $(DOCKER_REGISTRY)/$(APP):$(VERSION) .
+	#docker build -t $(APP):$(VERSION) .
+	#docker tag $(APP):$(VERSION) $(DOCKER_REGISTRY)/$(APP):$(VERSION)
 
 .PHONY: run
 run:

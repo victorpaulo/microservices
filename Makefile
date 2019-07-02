@@ -35,7 +35,7 @@ decompose:
 
 .PHONY: docker-list
 docker-list:
-	curl -X GET http://172.28.128.5:5000/v2/_catalog
+	curl -X GET http://172.28.128.3:5000/v2/_catalog
 
 k8s-install-apps:
 	cd app1 && make k8s-install
