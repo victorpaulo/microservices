@@ -8,7 +8,7 @@ doGit() {
     fi
     git add .
     git commit -m $comment
-    git push origin master
+    git push mygit  master
 }
 
 doGit $1
